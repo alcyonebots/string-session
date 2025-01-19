@@ -3,6 +3,10 @@ from pyrogram.types import InlineKeyboardButton
 
 class Data:
     generate_single_button = [InlineKeyboardButton("🔥 Start Generating Session 🔥", callback_data="generate")]
+
+    buttons = [
+        generate_single_button
+        
     START = """
 Hey {}
 
