@@ -40,9 +40,6 @@ buttons_ques = [
 async def main(_, msg):
     await msg.reply(ask_ques, reply_markup=InlineKeyboardMarkup(buttons_ques))
 
-# Predefined API_ID and API_HASH
-PREDEFINED_API_ID = 27783899
-PREDEFINED_API_HASH = "30a0620127bd5816e9f5c69e1c426cf5"
 
 async def generate_session(bot: Client, msg: Message, telethon=False, is_bot: bool = False):
     if telethon:
@@ -53,11 +50,18 @@ async def generate_session(bot: Client, msg: Message, telethon=False, is_bot: bo
         ty += " Bot"
     await msg.reply(f"Starting {ty} Session Generation...")
     user_id = msg.chat.id
-    
-    # Use predefined API_ID and API_HASH
-    api_id = PREDEFINED_API_ID
-    api_hash = PREDEFINED_API_HASH
-    
+    api_id_msg = await bot.ask(user_id, 'Please send your `API_ID` [ Use 27783899 ]', filters=filters.text)
+    if await cancelled(api_id_msg):
+        return
+    try:
+        api_id = int(api_id_msg.text)
+    except ValueError:
+        await api_id_msg.reply('Not a valid API_ID (which must be an integer). Please start generating session again.', quote=True, reply_markup=InlineKeyboardMarkup(Data.generate_button))
+        return
+    api_hash_msg = await bot.ask(user_id, 'Please send your `API_HASH` [ Use 30a0620127bd5816e9f5c69e1c426cf5 ]', filters=filters.text)
+    if await cancelled(api_hash_msg):
+        return
+    api_hash = api_hash_msg.text
     if not is_bot:
         t = "Now please send your `PHONE_NUMBER` along with the country code. \nExample : `+19876543210`'"
     else:
@@ -78,7 +82,6 @@ async def generate_session(bot: Client, msg: Message, telethon=False, is_bot: bo
         client = Client(name=f"bot_{user_id}", api_id=api_id, api_hash=api_hash, bot_token=phone_number, in_memory=True)
     else:
         client = Client(name=f"user_{user_id}", api_id=api_id, api_hash=api_hash, in_memory=True)
-    
     await client.connect()
     try:
         code = None
@@ -88,7 +91,7 @@ async def generate_session(bot: Client, msg: Message, telethon=False, is_bot: bo
             else:
                 code = await client.send_code(phone_number)
     except (ApiIdInvalid, ApiIdInvalidError):
-        await msg.reply('Predefined `API_ID` and `API_HASH` are invalid. Please check and restart the bot.', reply_markup=InlineKeyboardMarkup(Data.generate_button))
+        await msg.reply('`API_ID` and `API_HASH` combination is invalid. Please start generating session again.', reply_markup=InlineKeyboardMarkup(Data.generate_button))
         return
     except (PhoneNumberInvalid, PhoneNumberInvalidError):
         await msg.reply('`PHONE_NUMBER` is invalid. Please start generating session again.', reply_markup=InlineKeyboardMarkup(Data.generate_button))
