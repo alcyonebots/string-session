@@ -55,8 +55,8 @@ async def generate_session(bot: Client, msg: Message, telethon=False, is_bot: bo
     user_id = msg.chat.id
     
     # Use predefined API_ID and API_HASH
-    api_id = 27783899
-    api_hash = 30a0620127bd5816e9f5c69e1c426cf5
+    api_id = PREDEFINED_API_ID
+    api_hash = PREDEFINED_API_HASH
     
     if not is_bot:
         t = "Now please send your `PHONE_NUMBER` along with the country code. \nExample : `+19876543210`'"
