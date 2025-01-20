@@ -37,7 +37,7 @@ By @Reaper_Support
     ABOUT = """
 **About This Bot** 
 
-Telegram Bot to generate Pyrogram and Telethon string session by @StarkBots
+Telegram Bot to generate Pyrogram and Telethon string session by @Reaper_Support
 
 Developer : @xyl3r
     """
