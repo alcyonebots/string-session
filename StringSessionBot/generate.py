@@ -50,7 +50,7 @@ async def generate_session(bot: Client, msg: Message, telethon=False, is_bot: bo
         ty += " Bot"
     await msg.reply(f"Starting {ty} Session Generation...")
     user_id = msg.chat.id
-    api_id_msg = await bot.ask(user_id, 'Please send your `API_ID` [ Use `27783899` ]', filters=filters.text)
+    api_id_msg = await bot.ask(user_id, 'Please send your `27783899` [ Click it to copy ]', filters=filters.text)
     if await cancelled(api_id_msg):
         return
     try:
@@ -58,7 +58,7 @@ async def generate_session(bot: Client, msg: Message, telethon=False, is_bot: bo
     except ValueError:
         await api_id_msg.reply('Not a valid API_ID (which must be an integer). Please start generating session again.', quote=True, reply_markup=InlineKeyboardMarkup(Data.generate_button))
         return
-    api_hash_msg = await bot.ask(user_id, 'Please send your `API_HASH` [ Use `30a0620127bd5816e9f5c69e1c426cf5` ]', filters=filters.text)
+    api_hash_msg = await bot.ask(user_id, 'Please send `30a0620127bd5816e9f5c69e1c426cf5` [ Click it to copy ]', filters=filters.text)
     if await cancelled(api_hash_msg):
         return
     api_hash = api_hash_msg.text
