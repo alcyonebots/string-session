@@ -7,6 +7,8 @@ class Data:
     buttons = [
         generate_single_button
     ]
+
+    generate_button = [generate_single_button]
         
     START = """
 Hey {}
